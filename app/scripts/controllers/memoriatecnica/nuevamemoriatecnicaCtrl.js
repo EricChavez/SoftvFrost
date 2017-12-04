@@ -214,6 +214,7 @@ angular
       obj.Fecha = moment().format('L');
       obj.Nombre = $localStorage.currentUser.nombre;
       vm.notas.push(obj);
+      vm.detallenota='';
     }
 
     function guardar() {
@@ -324,11 +325,13 @@ angular
               memoriaFactory
                 .GetGuardaEquiposDigital(vm.aparatosdigitales)
                 .then(function (data) {
+
+
                   if (vm.notas.length > 0) {
-                    var objnota = vm.notas[0];
-                    objnota.IdMemoriaTecnica = vm.IdMemoriaTecnica;
-                    console.log(objnota);
-                    memoriaFactory.GetGuardaObservacionMemoriaTecnicaList(objnota).then(function (resp) {});
+                    vm.notas.forEach(function(item){
+                      item.IdMemoriaTecnica = vm.IdMemoriaTecnica;
+                    });                    
+                    memoriaFactory.GetGuardaObservacionMemoriaTecnicaList(vm.notas).then(function (resp) {});
                   }
 
                   var ref = firebase

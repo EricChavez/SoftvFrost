@@ -27,7 +27,7 @@ angular
 
 
 
-     factory.GetGuardaObservacionMemoriaTecnicaList = function (obj) {
+     factory.GetGuardaObservacionMemoriaTecnicaList = function (notas) {
       var deferred = $q.defer();
       var config = {
         headers: {
@@ -35,9 +35,7 @@ angular
         }
       };
       var Parametros = {
-        'IdMemoriaTecnica':obj.IdMemoriaTecnica,
-        'Observacion':obj.Observacion,
-        'IdUsuario':$localStorage.currentUser.idUsuario
+        'notas':notas       
       };
       $http.post(globalService.getUrl() + paths.GetGuardaObservacionMemoriaTecnicaList, JSON.stringify(Parametros), config).then(function (response) {
         deferred.resolve(response.data);

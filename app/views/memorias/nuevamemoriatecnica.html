@@ -367,7 +367,7 @@
                     <label class="col-sm-5 control-label">Fecha Activación:</label>
                     <div class="col-sm-7">
                       <input type="text" placeholder="DD/MM/YYYY" ui-mask="99/99/9999" model-view-value="true" class="form-control input-sm" name="fechaactivacion"
-                        ng-model="$ctrl.fechaactivacion">
+                        ng-model="$ctrl.fechaactivacion" ng-disabled="true">
                     </div>
                   </div>
 
@@ -415,154 +415,7 @@
 
 
             </uib-tab>
-            <uib-tab index="1" heading="Mediciones Eléctricas">
-              <div class="row">
-                <br>
-                <div class="col-md-4 col-md-offset-2">
-                  <h5 class="text-center text-primary">Voltaje comercial</h5>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Neutro-tierra :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="vcneutrotierra" ng-model="$ctrl.vcneutrotierra">
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Fase-tierra :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="vcfasetierra" ng-model="$ctrl.vcfasetierra">
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Fase-Neutro :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" ng-model="$ctrl.vcfaseneutro" name="vcfaseneutro">
-                    </div>
-                  </div>
-
-                </div>
-                <div class="col-md-4">
-
-                  <h5 class="text-center text-primary ">Voltaje UPS/No Break</h5>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Neutro-tierra :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="upcneutrotierra" ng-model="$ctrl.upcneutrotierra">
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Fase-tierra :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" ng-model="$ctrl.upcfasetierra" name="upcfasetierra">
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Fase-Neutro :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="$ctrl.upcfaseneutro" ng-model="$ctrl.upcfaseneutro">
-                    </div>
-                  </div>
-
-                </div>
-
-
-              </div>
-
-
-
-            </uib-tab>
-            <uib-tab index="2" heading="Datos de Equipo y Desempeño">
-
-              <div class="row">
-                <br>
-                <div class="col-md-3">
-
-                  <img src="images/memoria.jpg" width="250" height="200">
-                </div>
-
-                <div class="col-md-4 ">
-
-
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Módem (serie) :</label>
-                    <div class="col-sm-9">
-                      <input type="number" class="form-control input-sm" validate-on="dirty" invalid-message="'solo se permiten 8 números '" pattern=".{8,8}"
-                        name="modem" ng-model="$ctrl.modem">
-                      <p class="text-muted">(CAPTURAR LOS ULTIMOS 8 CARACTERES NUMÉRICOS )</p>
-                    </div>
-                  </div>
-
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Tamaño de antena :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="tamanoantena" ng-model="$ctrl.tamanoantena">
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Valor de SQF :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="sqf" ng-model="$ctrl.sqf">
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">UPS(serie) :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="upsserie" ng-model="$ctrl.upsserie">
-                    </div>
-                  </div>
-
-                </div>
-                <div class="col-md-4">
-
-
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Serie de Radio :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" validate-on="dirty" invalid-message="'solo se permiten 10 números '" ng-model="$ctrl.serieradio"
-                        name="serieradio" pattern=".{10,10}">
-
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Serie de router :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" ng-model="$ctrl.serierouter" name="serierouter">
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">Marca Router :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="marcarouter" ng-model="$ctrl.marcarouter">
-
-                    </div>
-                  </div>
-
-                  <div class="form-group row ">
-                    <label class="col-sm-3 control-label">WiFi (serie) :</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="wifiserie" ng-model="$ctrl.wifiserie">
-                    </div>
-                  </div>
-
-                </div>
-
-
-              </div>
-
-            </uib-tab>
-            <uib-tab index="3" heading="Trabajos Realizados">
+            <uib-tab index="1" heading="Trabajos Realizados">
               <br>
               <div class="row">
 
@@ -649,6 +502,157 @@
 
 
             </uib-tab>
+            <uib-tab index="2" heading="Mediciones Eléctricas">
+              <div class="row">
+                <br>
+                <div class="col-md-4 col-md-offset-2">
+                  <h5 class="text-center text-primary">Voltaje comercial</h5>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Neutro-tierra :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="vcneutrotierra" ng-model="$ctrl.vcneutrotierra">
+                    </div>
+                  </div>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Fase-tierra :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="vcfasetierra" ng-model="$ctrl.vcfasetierra">
+                    </div>
+                  </div>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Fase-Neutro :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" ng-model="$ctrl.vcfaseneutro" name="vcfaseneutro">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-4">
+
+                  <h5 class="text-center text-primary ">Voltaje UPS/No Break</h5>
+                  <p class="text-muted">En caso de no instalar Voltaje Ups/ Nobreak Dejar campo en BLANCO (No capturar) </p>
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Neutro-tierra :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="upcneutrotierra" ng-model="$ctrl.upcneutrotierra">
+                    
+                    </div>
+                  </div>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Fase-tierra :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" ng-model="$ctrl.upcfasetierra" name="upcfasetierra">
+                      
+                    </div>
+                  </div>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Fase-Neutro :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="$ctrl.upcfaseneutro" ng-model="$ctrl.upcfaseneutro">
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+
+            </uib-tab>
+            <uib-tab index="3" heading="Datos de Equipo y Desempeño">
+
+              <div class="row">
+                <br>
+                <div class="col-md-3">
+
+                  <img src="images/memoria.jpg" width="250" height="200">
+                </div>
+
+                <div class="col-md-4 ">
+
+
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Módem (serie) :</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control input-sm" validate-on="dirty" invalid-message="'solo se permiten 8 números '" pattern=".{8,8}"
+                        name="modem" ng-model="$ctrl.modem">
+                      <p class="text-muted">(CAPTURAR LOS ULTIMOS 8 CARACTERES NUMÉRICOS )</p>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Tamaño de antena :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="tamanoantena" ng-model="$ctrl.tamanoantena">
+                    </div>
+                  </div>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Valor de SQF :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="sqf" ng-model="$ctrl.sqf">
+                    </div>
+                  </div>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">UPS(serie) :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="upsserie" ng-model="$ctrl.upsserie">
+                      <p class="text-muted">En caso de no instalar UPS Dejar campo en BLANCO (No capturar)</p>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-4">
+
+
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Serie de Radio :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" validate-on="dirty" invalid-message="'solo se permiten 10 números '" ng-model="$ctrl.serieradio"
+                        name="serieradio" pattern=".{10,10}">
+
+                    </div>
+                  </div>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Serie de router :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" ng-model="$ctrl.serierouter" name="serierouter">
+                    </div>
+                  </div>
+
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Marca Router :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="marcarouter" ng-model="$ctrl.marcarouter">
+
+                    </div>
+                  </div>
+
+                <!--   <div class="form-group row ">
+                    <label class="col-sm-3 control-label">WiFi (serie) :</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control input-sm" name="wifiserie" ng-model="$ctrl.wifiserie">
+                    </div>
+                  </div> -->
+
+                </div>
+
+
+              </div>
+
+            </uib-tab>
+         
             <uib-tab index="4" heading="Cambio de Equipos">
               <br>
               <div class="col-md-12">
@@ -727,7 +731,7 @@
 
                   <div class="col-md-12 text-center">
                     <br>
-                    <button type="button" class="btn btn-success btn-sm" ng-disabled="$ctrl.detalle" ng-click="$ctrl.addAparatodig()">Agregar</button>
+                    <button type="button" class="btn btn-success btn-sm" ng-disabled="$ctrl.detalle" ng-click="$ctrl.addAparatodig()">Agregar stb</button>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -858,7 +862,7 @@
                     
                     </textarea>
 
-                  <button class="btn btn-info btn-sm" type="button" ng-disabled="$ctrl.notas.length > 0" ng-click="$ctrl.guardaNota()"><i class="fa fa-save"></i> agregar</button>
+                  <button class="btn btn-info btn-sm" type="button"  ng-click="$ctrl.guardaNota()"><i class="fa fa-save"></i> agregar</button>
                 </div>
                 <div class="col-md-9" style="overflow-y: scroll; max-height: 400px;">
 

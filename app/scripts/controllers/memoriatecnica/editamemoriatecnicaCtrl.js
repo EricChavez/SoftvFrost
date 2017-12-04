@@ -318,10 +318,10 @@ angular
             memoriaFactory.GuardaEquiposSustituir(equipos_).then(function (result) {
 
               if (vm.notas.length > 0) {
-                var objnota = vm.notas[0];
-                objnota.IdMemoriaTecnica = vm.IdMemoriaTecnica;
-                console.log(objnota);
-                memoriaFactory.GetGuardaObservacionMemoriaTecnicaList(objnota).then(function (resp) {});
+                vm.notas.forEach(function(item){
+                  item.IdMemoriaTecnica = vm.IdMemoriaTecnica;
+                });                    
+                memoriaFactory.GetGuardaObservacionMemoriaTecnicaList(vm.notas).then(function (resp) {});
               }
 
 
