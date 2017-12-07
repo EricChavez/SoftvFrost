@@ -22,7 +22,63 @@ angular
       GetObtieneDigitalMemoriaTecnica: '/GuardaEquiposSustituir/GetObtieneDigitalMemoriaTecnica',
       GetObtieneBitacoraPorIdMemoria: '/BuscaMemoriaTecnica/GetObtieneBitacoraPorIdMemoria',
       GetReporteMemoria: '/BuscaMemoriaTecnica/GetReporteMemoria',
-      GetReportexls:'/GuardaImagenesMemoriaTecnica/GetReportexls'
+      GetReportexls:'/GuardaImagenesMemoriaTecnica/GetReportexls',
+      GetTipoServicio: '/ObtieneTiposImagenes/GetTipoServicio',
+      GetEstatusTecnico: '/ObtieneTiposImagenes/GetEstatusTecnico',
+      GetTecnicosMemoriaTecnica: '/ObtieneTiposImagenes/GetTecnicosMemoriaTecnica',
+    };
+
+
+    factory.GetTecnicosMemoriaTecnica = function () {
+      var deferred = $q.defer();
+      var config = {
+        headers: {
+          'Authorization': $localStorage.currentUser.token
+        }
+      };
+     
+      $http.get(globalService.getUrl() + paths.GetTecnicosMemoriaTecnica,config).then(function (response) {
+        deferred.resolve(response.data);
+      }).catch(function (data) {
+        deferred.reject(data);
+      });
+
+      return deferred.promise;
+    };
+
+
+    factory.GetEstatusTecnico = function () {
+      var deferred = $q.defer();
+      var config = {
+        headers: {
+          'Authorization': $localStorage.currentUser.token
+        }
+      };
+     
+      $http.get(globalService.getUrl() + paths.GetEstatusTecnico,config).then(function (response) {
+        deferred.resolve(response.data);
+      }).catch(function (data) {
+        deferred.reject(data);
+      });
+
+      return deferred.promise;
+    };
+
+    factory.GetTipoServicio = function () {
+      var deferred = $q.defer();
+      var config = {
+        headers: {
+          'Authorization': $localStorage.currentUser.token
+        }
+      };
+     
+      $http.get(globalService.getUrl() + paths.GetTipoServicio,config).then(function (response) {
+        deferred.resolve(response.data);
+      }).catch(function (data) {
+        deferred.reject(data);
+      });
+
+      return deferred.promise;
     };
 
 
