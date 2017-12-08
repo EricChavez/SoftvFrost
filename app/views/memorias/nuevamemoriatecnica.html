@@ -200,8 +200,12 @@
               <div class="form-group row ">
                 <label class="col-sm-5 control-label">Nombre de Instalador</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control input-sm" ng-model="$ctrl.instalador" name="nombreinstalador" validate-on="dirty"
-                    invalid-message="'El nombre es obligatorio'" placeholder="Ingresa el nombre del instalador" required />
+                  <select   ng-options="item as item.Nombre for item in $ctrl.listTecnicos track by item.IdEntidad"
+                  
+                  class="form-control input-sm" ng-model="$ctrl.instalador" name="nombreinstalador" validate-on="dirty"
+                    invalid-message="'El nombre es obligatorio'"  required >
+                    <option value="">Selecciona</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -325,7 +329,11 @@
                   <div class="form-group row ">
                     <label class="col-sm-5 control-label">Tipo de servicio:</label>
                     <div class="col-sm-7">
-                      <input type="text" class="form-control input-sm" name="tiposervicio" ng-model="$ctrl.tiposervicio">
+                      <select type="text"
+                      ng-options="item as item.Descripcion for item in $ctrl.listTiposerv track by item.IdTipoServicio"
+                      class="form-control input-sm" name="tiposervicio" ng-model="$ctrl.tiposervicio">
+                      <option value="">selecciona</option>
+                      </select>
                     </div>
                   </div>
 
@@ -403,7 +411,11 @@
                   <div class="form-group row ">
                     <label class="col-sm-5 control-label">Estatus técnico:</label>
                     <div class="col-sm-7">
-                      <input type="text" class="form-control input-sm" name="estatustecnico" ng-model="$ctrl.estatustecnico">
+                      <select type="text"
+                      ng-options="item as item.Descripcion for item in $ctrl.listEstatus track by item.IdEstatusTecnico"
+                      class="form-control input-sm" name="estatustecnico" ng-model="$ctrl.estatustecnico">
+                        <option value="">selecciona</option>
+                      </select>
                     </div>
                   </div>
 

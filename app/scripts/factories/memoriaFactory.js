@@ -29,15 +29,19 @@ angular
     };
 
 
-    factory.GetTecnicosMemoriaTecnica = function () {
+    factory.GetTecnicosMemoriaTecnica = function (id) {
       var deferred = $q.defer();
       var config = {
         headers: {
           'Authorization': $localStorage.currentUser.token
         }
       };
+
+      var Parametros = {
+        'IdCompania':id       
+      };      
      
-      $http.get(globalService.getUrl() + paths.GetTecnicosMemoriaTecnica,config).then(function (response) {
+      $http.post(globalService.getUrl() + paths.GetTecnicosMemoriaTecnica,JSON.stringify(Parametros),config).then(function (response) {
         deferred.resolve(response.data);
       }).catch(function (data) {
         deferred.reject(data);

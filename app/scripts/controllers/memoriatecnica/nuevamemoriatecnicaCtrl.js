@@ -68,7 +68,8 @@ angular
       vm.telefono = results.Telefono;
       vm.Combo = results.Combo;
       vm.codigopostal = results.CodigoPostal;
-
+      console.log(vm.contratocompania.split('-')[1]);
+      getTecnicos(vm.contratocompania.split('-')[1]);
     }
 
     function obtenfolio() {}
@@ -86,6 +87,7 @@ angular
               );
               getValidationdata(result.GetObtieneDatosPorOrdenResult[0]);
             } else {
+
               getValidationdata(result.GetObtieneDatosPorOrdenResult[0]);
               vm.showguardar = true;
             }
@@ -152,27 +154,36 @@ angular
       vm.fechasitio = $filter('date')(fechaHoy, 'dd/MM/yyyy');
       vm.horallegada = moment().format('HH:mm');
       vm.instalador = $localStorage.currentUser.usuario;
-      vm.permitecheck= $localStorage.currentUser.CheckMemoria;
+      vm.permitecheck = $localStorage.currentUser.CheckMemoria;
       console.log(vm.horallegada);
       memoriaFactory.ObtieneTiposImagenes().then(function (response) {
         vm.tiposresp = response.GetObtieneTiposImagenesListResult;
-        
-        memoriaFactory.GetTipoServicio().then(function(tipos){
-         console.log(tipos);
-            
-         memoriaFactory.GetEstatusTecnico().then(function(estatus){
-           console.log(estatus);
 
-           memoriaFactory.GetTecnicosMemoriaTecnica().then(function(tecnicos){
-            console.log(tecnicos);
-           });
+        memoriaFactory.GetEstatusTecnico().then(function (estatus) {
+          console.log(estatus.GetEstatusTecnicoResult);
+          vm.listEstatus = estatus.GetEstatusTecnicoResult;
 
-         });
+          memoriaFactory.GetTipoServicio().then(function (tipos) {
+            console.log(tipos);
+            vm.listTiposerv = tipos.GetTipoServicioResult;
+
+
+
+          });
 
         });
 
       });
     }
+
+    function getTecnicos(id) {
+      memoriaFactory.GetTecnicosMemoriaTecnica(id).then(function (tecnicos) {
+        vm.listTecnicos=tecnicos.GetTecnicosMemoriaTecnicaResult;
+        console.log(tecnicos);
+      });
+    }
+
+
 
     function BorraImagen(index) {
       if (index > -1) {
@@ -229,7 +240,7 @@ angular
       obj.Fecha = moment().format('L');
       obj.Nombre = $localStorage.currentUser.nombre;
       vm.notas.push(obj);
-      vm.detallenota='';
+      vm.detallenota = '';
     }
 
     function guardar() {
@@ -296,20 +307,20 @@ angular
       var file_options = [];
       var files = [];
       var tipos = [];
-    
-      vm.uploader.queue.forEach(function (f) {        
-          var options = {
-            IdImagen: 0,
-            Accion: 1,
-            Tipo: f._file.idtipo,
-            Nombre: f._file.name,
-            IdUsuario: $localStorage.currentUser.idUsuario
-          };
-          file_options.push(options);
-          tipos.push(f._file.idtipo);
-          files.push(f._file);
-        
-      });     
+
+      vm.uploader.queue.forEach(function (f) {
+        var options = {
+          IdImagen: 0,
+          Accion: 1,
+          Tipo: f._file.idtipo,
+          Nombre: f._file.name,
+          IdUsuario: $localStorage.currentUser.idUsuario
+        };
+        file_options.push(options);
+        tipos.push(f._file.idtipo);
+        files.push(f._file);
+
+      });
 
 
       memoriaFactory.GuardaMemoriaTecnica(obj).then(function (response) {
@@ -338,9 +349,9 @@ angular
 
 
                   if (vm.notas.length > 0) {
-                    vm.notas.forEach(function(item){
+                    vm.notas.forEach(function (item) {
                       item.IdMemoriaTecnica = vm.IdMemoriaTecnica;
-                    });                    
+                    });
                     memoriaFactory.GetGuardaObservacionMemoriaTecnicaList(vm.notas).then(function (resp) {});
                   }
 
