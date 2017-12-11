@@ -26,6 +26,32 @@ angular
       GetTipoServicio: '/ObtieneTiposImagenes/GetTipoServicio',
       GetEstatusTecnico: '/ObtieneTiposImagenes/GetEstatusTecnico',
       GetTecnicosMemoriaTecnica: '/ObtieneTiposImagenes/GetTecnicosMemoriaTecnica',
+      GetAparatosTecnico:'/ObtieneTiposImagenes/GetAparatosTecnico'
+    };
+
+
+    factory.GetAparatosTecnico = function (Tipo,Clv_Orden,IdTecnico,IdMemoriaTecnica) {
+      var deferred = $q.defer();
+      var config = {
+        headers: {
+          'Authorization': $localStorage.currentUser.token
+        }
+      };
+
+      var Parametros = {
+        'Tipo':Tipo ,
+        'IdTecnico':IdTecnico,
+        'Clv_Orden':Clv_Orden,
+        'IdMemoriaTecnica':IdMemoriaTecnica    
+      };      
+     
+      $http.post(globalService.getUrl() + paths.GetAparatosTecnico,JSON.stringify(Parametros),config).then(function (response) {
+        deferred.resolve(response.data);
+      }).catch(function (data) {
+        deferred.reject(data);
+      });
+
+      return deferred.promise;
     };
 
 

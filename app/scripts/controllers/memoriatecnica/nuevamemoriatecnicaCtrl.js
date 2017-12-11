@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 angular
   .module("softvFrostApp")
   .controller("nuevamemoriatecnicaCtrl", function (
@@ -31,7 +31,6 @@ angular
     vm.generafolio = false;
     vm.mensajefolio = "Generar Folio";
     vm.blockgenerafolio = true;
-    vm.obtenfolio = obtenfolio;
     vm.titulo = "Registro de memoria técnica";
     vm.addAparatodig = addAparatodig;
     vm.eliminaaparatodig = eliminaaparatodig;
@@ -40,12 +39,24 @@ angular
     vm.Imagenes_eliminadas = [];
     vm.guardaNota = guardaNota;
     vm.eliminaNota = eliminaNota;
-
+    vm.detalleTecnico = detalleTecnico;
     initialData();
 
-
-    function eliminaNota() {
-      vm.notas = [];
+    function initialData() {
+      var fechaHoy = new Date();
+      vm.fechasitio = $filter('date')(fechaHoy, 'dd/MM/yyyy');
+      vm.horallegada = moment().format('HH:mm');
+      vm.instalador = $localStorage.currentUser.usuario;
+      vm.permitecheck = $localStorage.currentUser.CheckMemoria;     
+      memoriaFactory.ObtieneTiposImagenes().then(function (response) {
+        vm.tiposresp = response.GetObtieneTiposImagenesListResult;
+        memoriaFactory.GetEstatusTecnico().then(function (estatus) {         
+          vm.listEstatus = estatus.GetEstatusTecnicoResult;
+          memoriaFactory.GetTipoServicio().then(function (tipos) {          
+            vm.listTiposerv = tipos.GetTipoServicioResult;
+          });
+        });
+      });
     }
 
     function getValidationdata(obj) {
@@ -67,52 +78,37 @@ angular
       vm.plan = results.Servicio;
       vm.telefono = results.Telefono;
       vm.Combo = results.Combo;
-      vm.codigopostal = results.CodigoPostal;
-      console.log(vm.contratocompania.split('-')[1]);
+      vm.codigopostal = results.CodigoPostal;     
       getTecnicos(vm.contratocompania.split('-')[1]);
     }
 
-    function obtenfolio() {}
+
 
     function validar() {
-      memoriaFactory
-        .GetObtieneDatosPorOrden(vm.numeroorden)
-        .then(function (result) {
-          console.log(result);
+      memoriaFactory.GetObtieneDatosPorOrden(vm.numeroorden).then(function (result) {         
           if (result.GetObtieneDatosPorOrdenResult.length > 0) {
             if (result.GetObtieneDatosPorOrdenResult[0].Error > 0) {
-              ngNotify.set(
-                result.GetObtieneDatosPorOrdenResult[0].Msg,
-                "error"
-              );
+              ngNotify.set(result.GetObtieneDatosPorOrdenResult[0].Msg, "error");
               getValidationdata(result.GetObtieneDatosPorOrdenResult[0]);
             } else {
-
               getValidationdata(result.GetObtieneDatosPorOrdenResult[0]);
               vm.showguardar = true;
             }
-          } else {
-            ngNotify.set(
-              "El Numero de orden ingresado no es válido ,intente con otro",
-              "warn"
-            );
+            } else {
+            ngNotify.set("El Numero de orden ingresado no es válido ,intente con otro", "warn");
           }
         });
     }
 
     vm.uploader = new FileUploader({
       filters: [{
-        name: "yourName1",
-        fn: function (item) {
+        name: "yourName1",fn: function (item) {
           var count = 0;
           vm.uploader.queue.forEach(function (f) {
             count += f._file.name === item.name ? 1 : 0;
           });
           if (count > 0) {
-            ngNotify.set(
-              "Un archivo con ese mismo nombre ya fue seleccionado",
-              "warn"
-            );
+          ngNotify.set("Un archivo con ese mismo nombre ya fue seleccionado","warn");
             return false;
           } else {
             return true;
@@ -121,22 +117,42 @@ angular
       }]
     });
 
+    function validaAparatodig(serie) {
+      var count = 0;
+      vm.aparatosdigitales.forEach(function (item) { count += (item.SerieAnterior === serie) ? 1 : 0;      });
+      return (count > 0) ? true : false;
+    }
+
     function addAparatodig() {
-      var obj = {};
-      obj.SerieAnterior = vm.seriedigital;
-      obj.IdEquipoSustituir = 0;
-      obj.IdMemoriaTecnica = 0;
-      obj.paquete = vm.paquete;
-      obj.Opcion = 1;
-      obj.IdUsuario = $localStorage.currentUser.idUsuario;
-      obj.Equipo = vm.equipodigital;
-      vm.aparatosdigitales.push(obj);
+
+      if (vm.aparatosdigitales.length < 3) {
+        if (!validaAparatodig(vm.DTH.Descripcion)) {
+          var obj = {};
+          obj.SerieAnterior = vm.DTH.Descripcion;
+          obj.IdEquipoSustituir = 0;
+          obj.IdMemoriaTecnica = 0;
+          obj.paquete = vm.DTH.Servicio;
+          obj.Opcion = 1;
+          obj.IdUsuario = $localStorage.currentUser.idUsuario;
+          obj.Equipo = vm.DTH.Clv_CableModem;
+          vm.aparatosdigitales.push(obj);
+        } else {
+          ngNotify.set('El aparato ya esta seleccionado', 'warn');
+        }
+      } else {
+        ngNotify.set('solo puedes ingresar 3 aparatos', 'warn');
+      }
     }
 
     function eliminaaparatodig(index) {
       if (index > -1) {
-        //vm.aparatosdigitales[index].IdUsuario = $localStorage.currentUser.idUsuario;
         vm.aparatosdigitales.splice(index, 1);
+      }
+    }
+
+    function eliminaNota(index) {
+      if (index > -1) {
+        vm.notas.splice(index, 1);
       }
     }
 
@@ -148,43 +164,44 @@ angular
       fileItem.IdUsuario = $localStorage.currentUser.idUsuario;
     };
 
-    function initialData() {
-      var fechaHoy = new Date();
-
-      vm.fechasitio = $filter('date')(fechaHoy, 'dd/MM/yyyy');
-      vm.horallegada = moment().format('HH:mm');
-      vm.instalador = $localStorage.currentUser.usuario;
-      vm.permitecheck = $localStorage.currentUser.CheckMemoria;
-      console.log(vm.horallegada);
-      memoriaFactory.ObtieneTiposImagenes().then(function (response) {
-        vm.tiposresp = response.GetObtieneTiposImagenesListResult;
-
-        memoriaFactory.GetEstatusTecnico().then(function (estatus) {
-          console.log(estatus.GetEstatusTecnicoResult);
-          vm.listEstatus = estatus.GetEstatusTecnicoResult;
-
-          memoriaFactory.GetTipoServicio().then(function (tipos) {
-            console.log(tipos);
-            vm.listTiposerv = tipos.GetTipoServicioResult;
-
-
-
-          });
-
-        });
-
-      });
-    }
-
     function getTecnicos(id) {
       memoriaFactory.GetTecnicosMemoriaTecnica(id).then(function (tecnicos) {
-        vm.listTecnicos=tecnicos.GetTecnicosMemoriaTecnicaResult;
-        console.log(tecnicos);
+        vm.listTecnicos = tecnicos.GetTecnicosMemoriaTecnicaResult;        
       });
     }
 
+    function detalleTecnico() {
+      vm.listModem = [];
+      vm.listRadio = [];
+      vm.listRouter = [];
+      vm.listSTB = [];
+      vm.listAntena = [];
+      vm.aparatosdigitales = [];
+      getApartos();
+    }
 
+    function getApartos(){
+      memoriaFactory.GetAparatosTecnico(1, vm.numeroorden,vm.instalador.IdEntidad,0).then(function (aparatos) {
+        vm.listModem = aparatos.GetAparatosTecnicoResult;
+        memoriaFactory.GetAparatosTecnico(2, vm.numeroorden, vm.instalador.IdEntidad,0).then(function (aparatos) {       
+          vm.listRadio = aparatos.GetAparatosTecnicoResult;
+          memoriaFactory.GetAparatosTecnico(3, vm.numeroorden, vm.instalador.IdEntidad,0).then(function (aparatos) {       
+            vm.listRouter = aparatos.GetAparatosTecnicoResult;
+            memoriaFactory.GetAparatosTecnico(4, vm.numeroorden, vm.instalador.IdEntidad,0).then(function (aparatos) {      
+              vm.listSTB = aparatos.GetAparatosTecnicoResult;
+              memoriaFactory.GetAparatosTecnico(5, vm.numeroorden, vm.instalador.IdEntidad,0).then(function (aparatos) {       
+                vm.listAntena = aparatos.GetAparatosTecnicoResult;
+                memoriaFactory.GetAparatosTecnico(6, vm.numeroorden, vm.instalador.IdEntidad,0).then(function (aparatos) {       
+                  vm.listUPS = aparatos.GetAparatosTecnicoResult;
+                });
+              });
+            });
+          });
+        });
+      });
+    }
 
+  
     function BorraImagen(index) {
       if (index > -1) {
         vm.cambios.splice(index, 1);
@@ -198,12 +215,7 @@ angular
     }
 
     function cambioAparato() {
-      if (
-        vm.serieanterior !== "" &&
-        vm.serieanterior !== undefined &&
-        (vm.equiposurtir !== "" && vm.equiposurtir !== undefined) &&
-        (vm.serienueva !== "" && vm.serienueva !== undefined)
-      ) {
+      if (vm.serieanterior && vm.equiposurtir && vm.serienueva) {
         if (vm.serienueva !== vm.serieanterior) {
           var obj = {};
           obj.SerieAnterior = vm.serieanterior;
@@ -227,9 +239,7 @@ angular
     }
 
     function isvalid(value) {
-      return value !== undefined && value !== "" && value !== null ?
-        true :
-        false;
+      return value !== undefined && value !== "" && value !== null ?  true : false;
     }
 
     function guardaNota() {
@@ -248,9 +258,8 @@ angular
         SAN: isvalid(vm.SAN) === true ? vm.SAN : 0,
         Contrato: isvalid(vm.contrato) === true ? vm.contrato : 0,
         Distribuidor: isvalid(vm.distribuidor) === true ? vm.distribuidor : "",
-        Instalador: isvalid(vm.instalador) === true ? vm.instalador : "",
-        FechaVisita: isvalid(vm.fechasitio) === true ?
-          $filter("date")(vm.fechasitio, "yyyy/MM/dd") : "",
+        Instalador: isvalid(vm.instalador.Nombre ) === true ? vm.instalador.Nombre  : "",
+        FechaVisita: isvalid(vm.fechasitio) === true ? $filter("date")(vm.fechasitio, "yyyy/MM/dd") : "",
         HoraLlegada: isvalid(vm.horallegada) === true ? vm.horallegada : "",
         HoraSalida: isvalid(vm.horasalida) === true ? vm.horasalida : "",
         SiteId: 0,
@@ -262,7 +271,7 @@ angular
         PersonaRecibe: isvalid(vm.recibe) === true ? vm.recibe : "",
         Plataforma: isvalid(vm.plataforma) === true ? vm.plataforma : "",
         Servicio: isvalid(vm.plan) === true ? vm.plan : "",
-        TipoServicio: isvalid(vm.tiposervicio) === true ? vm.tiposervicio : "",
+        TipoServicio: isvalid(vm.tiposervicio.Descripcion ) === true ? vm.tiposervicio.Descripcion  : "",
         Velocidad: isvalid(vm.velocidad) === true ? vm.velocidad : "",
         DomicilioNotificacion: isvalid(vm.domicilionotificacion) === true ?
           vm.domicilionotificacion : "",
@@ -272,23 +281,22 @@ angular
         Latitud: vm.latitud,
         Longitud: vm.longitud,
         Beam: isvalid(vm.beam) === true ? vm.beam : "",
-        EstatusTecnico: isvalid(vm.estatustecnico) === true ? vm.estatustecnico : "",
-        FechaActivacion: isvalid(vm.fechaactivacion) === true ?
-          $filter("date")(vm.fechaactivacion, "yyyy/MM/dd") : "",
+        EstatusTecnico: isvalid(vm.estatustecnico.Descripcion ) === true ? vm.estatustecnico.Descripcion  : "",
+        FechaActivacion: isvalid(vm.fechaactivacion) === true ? $filter("date")(vm.fechaactivacion, "yyyy/MM/dd") : "",
         VCNeutroTierra: isvalid(vm.vcneutrotierra) === true ? vm.vcneutrotierra : "",
         VCFaseTierra: isvalid(vm.vcfasetierra) === true ? vm.vcfasetierra : "",
         VCFaseNeutro: isvalid(vm.vcfaseneutro) === true ? vm.vcfaseneutro : "",
         VUPSNeutroTierra: isvalid(vm.upcneutrotierra) === true ? vm.upcneutrotierra : "",
         VUPSFaseTierra: isvalid(vm.upcfasetierra) === true ? vm.upcfasetierra : "",
         VUPSFaseNeutro: isvalid(vm.upcfaseneutro) === true ? vm.upcfaseneutro : "",
-        Modem: isvalid(vm.modem) === true ? vm.modem : "",
+        Modem: isvalid(vm.modem.Descripcion) === true ? vm.modem.Descripcion : "",
         Antena: isvalid(vm.tamanoantena) === true ? vm.tamanoantena : "",
         SQF: isvalid(vm.sqf) === true ? vm.sqf : "",
-        Radio: isvalid(vm.serieradio) === true ? vm.serieradio : "",
-        Router: isvalid(vm.serierouter) === true ? vm.serierouter : "",
+        Radio: isvalid(vm.serieradio.Descripcion ) === true ? vm.serieradio.Descripcion  : "",
+        Router: isvalid(vm.serierouter.Descripcion ) === true ? vm.serierouter.Descripcion : "",
         MarcaRouter: isvalid(vm.marcarouter) === true ? vm.marcarouter : "",
-        UPS: isvalid(vm.upsserie) === true ? vm.upsserie : "",
-        WiFi: isvalid(vm.wifiserie) === true ? vm.wifiserie : "",
+        UPS: isvalid(vm.upsserie.Descripcion ) === true ? vm.upsserie.Descripcion : "",
+        WiFi: "",
         Instalacion: vm.Instalacion,
         InstalacionDemo: vm.InstalacionDemo,
         Apuntamiento: vm.Apuntamiento,
@@ -300,9 +308,12 @@ angular
         Folio: isvalid(vm.numerofolio) === true ? vm.numerofolio : 0,
         Clv_Orden: isvalid(vm.numeroorden) === true ? vm.numeroorden : 0,
         IdUsuario: $localStorage.currentUser.idUsuario,
-        PersonaValidaServicio: vm.PersonaValidaServicio
+        PersonaValidaServicio: vm.PersonaValidaServicio,
+        IdEstatusTecnico:vm.estatustecnico.IdEstatusTecnico,
+        IdTipoServicio:vm.tiposervicio.IdTipoServicio,
+        IdTecnico:vm.instalador.IdEntidad,
+        AntenaSerie:isvalid(vm.antena.Descripcion ) === true ? vm.antena.Descripcion : "" 
       };
-
 
       var file_options = [];
       var files = [];
@@ -319,46 +330,32 @@ angular
         file_options.push(options);
         tipos.push(f._file.idtipo);
         files.push(f._file);
-
       });
 
 
       memoriaFactory.GuardaMemoriaTecnica(obj).then(function (response) {
         vm.IdMemoriaTecnica = response.GetGuardaMemoriaTecnicaListResult[0].IdMemoriaTecnica;
 
-
         memoriaFactory.GuardaImagenesMemoriaTecnica(files, vm.IdMemoriaTecnica, file_options, []).then(function (data) {
           ngNotify.set("las imagenes se han guardado correctamente", "success");
           vm.uploader.clearQueue();
 
-
           vm.cambios.forEach(function (item) {
             item.IdMemoriaTecnica = vm.IdMemoriaTecnica;
           });
-
           vm.aparatosdigitales.forEach(function (item) {
             item.IdMemoriaTecnica = vm.IdMemoriaTecnica;
           });
 
-          memoriaFactory
-            .GuardaEquiposSustituir(vm.cambios)
-            .then(function (result) {
-              memoriaFactory
-                .GetGuardaEquiposDigital(vm.aparatosdigitales)
-                .then(function (data) {
-
+          memoriaFactory.GuardaEquiposSustituir(vm.cambios).then(function (result) {            
+              memoriaFactory.GetGuardaEquiposDigital(vm.aparatosdigitales).then(function (data) {
 
                   if (vm.notas.length > 0) {
-                    vm.notas.forEach(function (item) {
-                      item.IdMemoriaTecnica = vm.IdMemoriaTecnica;
-                    });
+                    vm.notas.forEach(function (item) {  item.IdMemoriaTecnica = vm.IdMemoriaTecnica; });
                     memoriaFactory.GetGuardaObservacionMemoriaTecnicaList(vm.notas).then(function (resp) {});
                   }
 
-                  var ref = firebase
-                    .database()
-                    .ref()
-                    .child("messages");
+                  var ref = firebase.database().ref().child("messages");
                   vm.messages = $firebaseArray(ref);
                   vm.messages.$add({
                     Id: vm.IdMemoriaTecnica,

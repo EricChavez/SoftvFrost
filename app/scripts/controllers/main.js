@@ -54,42 +54,20 @@ angular.module('softvFrostApp').controller('MainCtrl', function (
           var first = true;
 
           ref.on('child_removed', function (snapshot) {
-            console.log(snapshot);
+            
             vm.messages.$loaded().then(function (notes) {
               vm.count = notes.length;
             });
           });
-
-          /*ref.limitToLast(1).on('child_added', function(snap) {
-            vm.messages.$loaded().then(function(notes) {
-              vm.count = notes.length;
-            });
-            console.log(snap);
-            if (first) {
-              first = false;
-            } else {
-              ngNotify.set(
-                '<i class="fa fa-user"></i> Atención se ha generado una nueva memoria técnica.',
-                {
-                  theme: 'pitchy',
-                  html: true
-                }
-              );
-            }
-          });*/
-
-
           ref.once('value', function (snap) {
 
             //TODO: display initial state...
             // Object.keys not supported in IE 8, but has a polyfill: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
             var keys = Object.keys(snap.val() || {});
             var lastIdInSnapshot = keys[keys.length - 1];
-            console.log(snap);
-            console.log(snap.key);
-            console.log(lastIdInSnapshot);
+           
             ref.orderByKey().startAt(lastIdInSnapshot).on('child_added', function (newMessSnapshot) {
-              console.log(newMessSnapshot);
+             
               if (snap.key === lastIdInSnapshot) {
                 return;
               }
@@ -98,18 +76,7 @@ angular.module('softvFrostApp').controller('MainCtrl', function (
               } else {
                 vm.messages.$loaded().then(function (notes) {
                   vm.count = notes.length;
-
-                /*  GetdataFire().then(function (result) {
-                    console.log(result);
-                    result.forEach(function (item) {
-                      if (item.$id === snap.key) {
-                        console.log(item);
-                      }
-                    });
-
-                  });
-*/
-                  ngNotify.set('<i class="fa fa-bell"></i> tienes una nueva notificación', {
+                    ngNotify.set('<i class="fa fa-bell"></i> tienes una nueva notificación', {
                     theme: 'pitchy',
                     html: true,
                     type: 'success'
@@ -134,33 +101,6 @@ angular.module('softvFrostApp').controller('MainCtrl', function (
     delete $localStorage.currentUser;
     $window.location.reload();
   }
-
-
-  /*function GetdataFire() {
-
-    var ref = firebase
-      .database()
-      .ref()
-      .child('messages');
-    var defered = $q.defer();
-    var promise = defered.promise;
-    var registros = [];
-    var posts = $firebaseArray(ref);
-    posts.$loaded().then(function (x) {
-      x.forEach(function (item) {
-        registros.push(item);
-      });
-      defered.resolve(registros);
-    }).catch(function (err) {
-      defered.reject(err);
-    });
-    return promise;
-  }*/
-
-
-
-
-
   var vm = this;
   vm.logOut = logOut;
 });

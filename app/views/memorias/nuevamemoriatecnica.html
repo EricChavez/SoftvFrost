@@ -68,6 +68,7 @@
     border-radius: none;
     opacity: 0.9;
     font-weight: 500;
+    font-size:11px;
     text-transform: uppercase;
   }
 
@@ -78,12 +79,17 @@
     <div class="card-head style-default-light" style="padding-top:10px; padding-left:10px;">
       <header>
         <strong style="font-weight:bold; border:none; margin-left:10px;">{{$ctrl.titulo}}</strong>
-        <br /><small class="text-muted" style="font-size:14px; margin-left:10px;"> 
-                <a href="#"><i class="fa fa-home" aria-hidden="true"></i> Inicio</a>><a href="#" class="paginaActiva">Memoria técnica</a></small>
+        <br />
+        <small class="text-muted" style="font-size:14px; margin-left:10px;">
+          <a href="#">
+            <i class="fa fa-home" aria-hidden="true"></i> Inicio</a>>
+          <a href="#" class="paginaActiva">Memoria técnica</a>
+        </small>
       </header>
       <div class="tools">
         <div class="btn-group">
-          <button class="btn btn-primary btn-sm" ng-show="$ctrl.showguardar" title="Crear una nueva memoria técnica" type="submit"> Guardar</button>
+          <button class="btn btn-primary btn-sm" ng-show="$ctrl.showguardar" title="Crear una nueva memoria técnica" type="submit">
+          Guardar</button>
           <button title="Regresar a atenciones telefónicas" type="button" ui-sref="home.memoria.memoriastecnicas" class="btn btn-default-bright btn-sm"
             name="button">Salir</button>
         </div>
@@ -94,7 +100,9 @@
 
         <div class="row">
           <div class="col-md-5">
-            <p><b class="text-center text-primary"> Información principal</b></p>
+            <p>
+              <b class="text-center text-primary"> Información principal</b>
+            </p>
             <div class="form-group row ">
               <label class="col-sm-3 control-label"># Orden</label>
               <div class="col-sm-4">
@@ -110,16 +118,14 @@
             <div class="form-group row ">
               <label class="col-sm-3 control-label">Folio instalación</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control input-sm" ng-disabled="true" name="numerofolio" placeholder="Ingresa # folio"
-                  ng-model="$ctrl.numerofolio" />
+                <input type="text" class="form-control input-sm" ng-disabled="true" name="numerofolio" placeholder="Ingresa # folio" ng-model="$ctrl.numerofolio"
+                />
               </div>
               <div class="col-sm-3" ng-if="$ctrl.permitecheck">
                 <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox"  ng-model="$ctrl.generafolio" 
-                            ng-disabled="$ctrl.blockgenerafolio"
-                            ng-change="$ctrl.obtenfolio()"
-                            ><span>{{$ctrl.mensajefolio}}</span>
-													</label>
+                  <input type="checkbox" ng-model="$ctrl.generafolio" ng-disabled="$ctrl.blockgenerafolio" ng-change="$ctrl.obtenfolio()">
+                  <span>{{$ctrl.mensajefolio}}</span>
+                </label>
               </div>
 
 
@@ -133,11 +139,9 @@
               </div>
               <div class="col-sm-3">
                 <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox"  ng-model="$ctrl.Combo" 
-                            ng-disabled="true"
-                            
-                            ><span>Es combo</span>
-													</label>
+                  <input type="checkbox" ng-model="$ctrl.Combo" ng-disabled="true">
+                  <span>Es combo</span>
+                </label>
               </div>
             </div>
 
@@ -145,7 +149,9 @@
           </div>
           <div class="col-md-7">
 
-            <p><b class="text-center text-primary"> Datos de la empresa</b></p>
+            <p>
+              <b class="text-center text-primary"> Datos de la empresa</b>
+            </p>
 
             <div class="col-md-6">
 
@@ -196,22 +202,20 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="form-group row ">
                 <label class="col-sm-5 control-label">Nombre de Instalador</label>
                 <div class="col-sm-7">
-                  <select   ng-options="item as item.Nombre for item in $ctrl.listTecnicos track by item.IdEntidad"
-                  
-                  class="form-control input-sm" ng-model="$ctrl.instalador" name="nombreinstalador" validate-on="dirty"
-                    invalid-message="'El nombre es obligatorio'"  required >
+                  <select ng-options="item as item.Nombre for item in $ctrl.listTecnicos track by item.IdEntidad" class="form-control input-sm"
+                    ng-model="$ctrl.instalador" ng-change="$ctrl.detalleTecnico()" name="nombreinstalador" validate-on="dirty"
+                    invalid-message="'El nombre es obligatorio'" required>
                     <option value="">Selecciona</option>
                   </select>
                 </div>
               </div>
             </div>
 
-            <div class="col-md-6">
-            </div>
+
 
 
 
@@ -242,7 +246,7 @@
                     <label class="col-sm-5 control-label">Direccion</label>
                     <div class="col-sm-7">
                       <textarea type="text" class="form-control input-sm" ng-model="$ctrl.direccion" name="direccion" rows="3">
-                          
+
                       </textarea>
                     </div>
                   </div>
@@ -329,11 +333,22 @@
                   <div class="form-group row ">
                     <label class="col-sm-5 control-label">Tipo de servicio:</label>
                     <div class="col-sm-7">
-                      <select type="text"
+
+
+                      <!--  <select 
+                      invalid-message="'El campo es obligatorio'"  required
                       ng-options="item as item.Descripcion for item in $ctrl.listTiposerv track by item.IdTipoServicio"
                       class="form-control input-sm" name="tiposervicio" ng-model="$ctrl.tiposervicio">
                       <option value="">selecciona</option>
+                      </select> -->
+
+                      <select ng-options="item as item.Descripcion for item in $ctrl.listTiposerv track by item.IdTipoServicio" class="form-control input-sm"
+                        ng-model="$ctrl.tiposervicio" name="tiposervicio" validate-on="dirty" invalid-message="'El nombre es obligatorio'"
+                        required>
+                        <option value="" disabled>Selecciona</option>
                       </select>
+
+
                     </div>
                   </div>
 
@@ -374,8 +389,7 @@
                   <div class="form-group row ">
                     <label class="col-sm-5 control-label">Fecha Activación:</label>
                     <div class="col-sm-7">
-                      <input type="text"  class="form-control input-sm" name="fechaactivacion"
-                        ng-model="$ctrl.fechaactivacion" ng-disabled="true">
+                      <input type="text" class="form-control input-sm" name="fechaactivacion" ng-model="$ctrl.fechaactivacion" ng-disabled="true">
                     </div>
                   </div>
 
@@ -411,9 +425,8 @@
                   <div class="form-group row ">
                     <label class="col-sm-5 control-label">Estatus técnico:</label>
                     <div class="col-sm-7">
-                      <select type="text"
-                      ng-options="item as item.Descripcion for item in $ctrl.listEstatus track by item.IdEstatusTecnico"
-                      class="form-control input-sm" name="estatustecnico" ng-model="$ctrl.estatustecnico">
+                      <select invalid-message="'El campo es obligatorio'" required ng-options="item as item.Descripcion for item in $ctrl.listEstatus track by item.IdEstatusTecnico"
+                        class="form-control input-sm" name="estatustecnico" ng-model="$ctrl.estatustecnico">
                         <option value="">selecciona</option>
                       </select>
                     </div>
@@ -429,77 +442,70 @@
             </uib-tab>
             <uib-tab index="1" heading="Trabajos Realizados">
               <br>
-              <div class="row">
-
+              <div class="row" style="padding:30px;">
+               
                 <div class="col-md-4 col-md-offset-2">
 
                   <div class="col-md-6">
                     <div class="row">
                       <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox"
-                            ng-disabled="$ctrl.detalle"
-                             ng-model="$ctrl.Instalacion" ><span>Instalación</span>
-													</label>
+                        <input type="checkbox" ng-disabled="$ctrl.detalle" ng-model="$ctrl.Instalacion">
+                        <span>Instalación</span>
+                      </label>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="row">
                       <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox"
-                            ng-disabled="$ctrl.detalle"
-                             ng-model="$ctrl.Mantenimiento" ><span>Mantenimiento</span>
-													</label>
+                        <input type="checkbox" ng-disabled="$ctrl.detalle" ng-model="$ctrl.Mantenimiento">
+                        <span>Mantenimiento</span>
+                      </label>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="row">
                       <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox" 
-                            ng-disabled="$ctrl.detalle"
-                            ng-model="$ctrl.CambioComponentes" ><span>Cambio de componentes</span>
-													</label>
+                        <input type="checkbox" ng-disabled="$ctrl.detalle" ng-model="$ctrl.CambioComponentes">
+                        <span>Cambio de componentes</span>
+                      </label>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="row">
                       <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox"
-                            ng-disabled="$ctrl.detalle"
-                             ng-model="$ctrl.SiteSurvey" ><span>Site Survey</span>
-													</label>
+                        <input type="checkbox" ng-disabled="$ctrl.detalle" ng-model="$ctrl.SiteSurvey">
+                        <span>Site Survey</span>
+                      </label>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="row">
                       <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox"
-                            ng-disabled="$ctrl.detalle"
-                             ng-model="$ctrl.InstalacionDemo" ><span>Instalación Demo/Piloto</span>
-													</label>
+                        <input type="checkbox" ng-disabled="$ctrl.detalle" ng-model="$ctrl.InstalacionDemo">
+                        <span>Instalación Demo/Piloto</span>
+                      </label>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="row">
                       <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox" 
-                            ng-disabled="$ctrl.detalle"
-                            ng-model="$ctrl.Reubicacion" ><span>Reubicación</span>
-													</label>
+                        <input type="checkbox" ng-disabled="$ctrl.detalle" ng-model="$ctrl.Reubicacion">
+                        <span>Reubicación</span>
+                      </label>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="row">
                       <label class="checkbox-inline checkbox-styled checkbox-info">
-                            <input type="checkbox"
-                            ng-disabled="$ctrl.detalle"
-                             ng-model="$ctrl.Apuntamiento" ><span>Apuntamiento</span>
-													</label>
+                        <input type="checkbox" ng-disabled="$ctrl.detalle" ng-model="$ctrl.Apuntamiento">
+                        <span>Apuntamiento</span>
+                      </label>
                     </div>
                   </div>
 
@@ -550,7 +556,7 @@
                     <label class="col-sm-3 control-label">Neutro-tierra :</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control input-sm" name="upcneutrotierra" ng-model="$ctrl.upcneutrotierra">
-                    
+
                     </div>
                   </div>
 
@@ -558,7 +564,7 @@
                     <label class="col-sm-3 control-label">Fase-tierra :</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control input-sm" ng-model="$ctrl.upcfasetierra" name="upcfasetierra">
-                      
+
                     </div>
                   </div>
 
@@ -579,26 +585,29 @@
             </uib-tab>
             <uib-tab index="3" heading="Datos de Equipo y Desempeño">
 
-              <div class="row">
+              <div class="row" style="padding:30px;">
                 <br>
-                <div class="col-md-3">
-
-                  <img src="images/memoria.jpg" width="250" height="200">
-                </div>
-
-                <div class="col-md-4 ">
 
 
-
+                <div class="col-md-5 col-md-offset-1 ">
                   <div class="form-group row ">
                     <label class="col-sm-3 control-label">Módem (serie) :</label>
                     <div class="col-sm-9">
-                      <input type="number" class="form-control input-sm" validate-on="dirty" invalid-message="'solo se permiten 8 números '" pattern=".{8,8}"
-                        name="modem" ng-model="$ctrl.modem">
-                      <p class="text-muted">(CAPTURAR LOS ULTIMOS 8 CARACTERES NUMÉRICOS )</p>
+                      <select ng-options="item as item.Descripcion for item in $ctrl.listModem track by item.Clv_CableModem" class="form-control input-sm"
+                        validate-on="dirty" required name="modem" ng-model="$ctrl.modem">
+                        <option value="">- selecciona aparato -</option>
+                      </select>
                     </div>
                   </div>
-
+                  <div class="form-group row ">
+                    <label class="col-sm-3 control-label">Antena (serie) :</label>
+                    <div class="col-sm-9">
+                      <select ng-options="item as item.Descripcion for item in $ctrl.listAntena track by item.Clv_CableModem" class="form-control input-sm"
+                        validate-on="dirty" required name="antena" ng-model="$ctrl.antena">
+                        <option value="">- selecciona aparato -</option>
+                      </select>
+                    </div>
+                  </div>
 
                   <div class="form-group row ">
                     <label class="col-sm-3 control-label">Tamaño de antena :</label>
@@ -614,15 +623,20 @@
                     </div>
                   </div>
 
-                  
+
 
                 </div>
-                <div class="col-md-4">
+                
+                <div class="col-md-5">
                   <div class="form-group row ">
                     <label class="col-sm-3 control-label">UPS(serie) :</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" name="upsserie" ng-model="$ctrl.upsserie">
-                      <p class="text-muted">En caso de no instalar UPS Dejar campo en BLANCO (No capturar)</p>
+
+                      <select ng-options="item as item.Descripcion for item in $ctrl.listUPS track by item.Clv_CableModem" class="form-control input-sm"
+                        validate-on="dirty" required name="upsserie" ng-model="$ctrl.upsserie">
+                        <option value="">- selecciona aparato -</option>
+                      </select>
+
                     </div>
                   </div>
 
@@ -630,16 +644,20 @@
                   <div class="form-group row ">
                     <label class="col-sm-3 control-label">Serie de Radio :</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" validate-on="dirty" invalid-message="'solo se permiten 10 números '" ng-model="$ctrl.serieradio"
-                        name="serieradio" pattern=".{10,10}">
-
+                      <select class="form-control input-sm" ng-options="item as item.Descripcion for item in $ctrl.listRadio track by item.Clv_CableModem"
+                        validate-on="dirty" ng-model="$ctrl.serieradio" name="serieradio">
+                        <option value="">- selecciona aparato -</option>
+                      </select>
                     </div>
                   </div>
 
                   <div class="form-group row ">
                     <label class="col-sm-3 control-label">Serie de router :</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control input-sm" ng-model="$ctrl.serierouter" name="serierouter">
+                      <select class="form-control input-sm" ng-options="item as item.Descripcion for item in $ctrl.listRouter track by item.Clv_CableModem"
+                        ng-model="$ctrl.serierouter" name="serierouter">
+                        <option value="">- selecciona aparato -</option>
+                      </select>
                     </div>
                   </div>
 
@@ -651,7 +669,7 @@
                     </div>
                   </div>
 
-                <!--   <div class="form-group row ">
+                  <!--   <div class="form-group row ">
                     <label class="col-sm-3 control-label">WiFi (serie) :</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control input-sm" name="wifiserie" ng-model="$ctrl.wifiserie">
@@ -659,12 +677,12 @@
                   </div> -->
 
                 </div>
-
+               
 
               </div>
 
             </uib-tab>
-         
+
             <uib-tab index="4" heading="Cambio de Equipos">
               <br>
               <div class="col-md-12">
@@ -704,8 +722,10 @@
                             <td>{{s.Equipo}}</td>
                             <td>{{s.SerieAnterior}}</td>
                             <td>{{s.SerieNueva}}</td>
-                            <td><button type="button" ng-disabled="$ctrl.detalle" class="btn btn-danger btn-xs" ng-click="$ctrl.eliminaaparato($index)">
-                        <i class="fa fa-trash"></i> Eliminar</button></td>
+                            <td>
+                              <button type="button" ng-disabled="$ctrl.detalle" class="btn btn-danger btn-xs" ng-click="$ctrl.eliminaaparato($index)">
+                                <i class="fa fa-trash"></i> Eliminar</button>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -726,21 +746,13 @@
               <div class="col-md-8 col-md-offset-2" style="padding: 10px;">
 
                 <div class="col-md-6">
-                  <h5 class="text-primary text-center">Ingresa el aparato</h5>
+                  <h5 class="text-primary text-center">Selecciona el aparato</h5>
                   <div class="col-md-12">
-                    <b> Nombre de paquete</b>
-                    <input type="text" class="form-control" name="paquete" ng-model="$ctrl.paquete">
+                    <select class="form-control" ng-model="$ctrl.DTH" ng-options="item as item.Descripcion for item in $ctrl.listSTB track by item.Clv_CableModem">
+                      <option value="selecciona"></option>
+                    </select>
+                    <p class="text-muted">puedes agregar como max.3 aparatos</p>
                   </div>
-                  <div class="col-md-12">
-                    <b>Equipo</b>
-                    <input type="text" class="form-control" name="equipodigital" ng-model="$ctrl.equipodigital">
-                  </div>
-                  <div class="col-md-12">
-                    <b>Serie de aparato</b>
-                    <input type="text" class="form-control" name="serieanterior" ng-model="$ctrl.seriedigital">
-                  </div>
-
-
                   <div class="col-md-12 text-center">
                     <br>
                     <button type="button" class="btn btn-success btn-sm" ng-disabled="$ctrl.detalle" ng-click="$ctrl.addAparatodig()">Agregar stb</button>
@@ -754,7 +766,9 @@
                         <div class="tile-icon">
                           <img src="../../assets/img/avatar2.jpg?1404026449" alt="">
                         </div>
-                        <div class="tile-text"><b class="text-info">{{x.paquete}}</b><br>{{x.Equipo}} | {{x.SerieAnterior}}</div>
+                        <div class="tile-text">
+                          <b class="text-info">{{x.paquete}}</b>
+                          <br>{{x.Equipo}} | {{x.SerieAnterior}}</div>
                       </a>
                       <a class="btn btn-flat ink-reaction" ng-click="$ctrl.eliminaaparatodig($index);">
                         <i class="fa fa-trash"></i>
@@ -776,13 +790,14 @@
               <br>
               <div class="col-md-12">
                 <div class="col-md-6" ng-show="$ctrl.seleccionImagen">
-                  <h4 class="text-center text-danger"><i class="fa fa-picture-o"></i> Subir Imagenes</h4>
+                  <h4 class="text-center text-danger">
+                    <i class="fa fa-picture-o"></i> Subir Imagenes</h4>
                   <div class="col-md-6">
                     <p class="text-primary">Selecciona el tipo de imagen</p>
                     <select ng-model="$ctrl.tipoimagen" class="form-control input-sm" ng-options="item as item.Nombre for item in $ctrl.tiposresp track by item.IdTipo"
                       ng-model="selected">
                       <option value="">Selecciona el tipo </option>
-                  </select>
+                    </select>
                   </div>
 
                   <div class="col-md-6">
@@ -823,8 +838,8 @@
                           <td>
 
                             <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                        <span class="glyphicon glyphicon-trash"></span> Eliminar
-                                    </button>
+                              <span class="glyphicon glyphicon-trash"></span> Eliminar
+                            </button>
                           </td>
 
 
@@ -839,7 +854,8 @@
 
                 </div>
                 <div class="col-md-6  text-center">
-                  <h4 class="text-center text-danger"><i class="fa fa-picture-o"></i> Imagenes cargadas</h4>
+                  <h4 class="text-center text-danger">
+                    <i class="fa fa-picture-o"></i> Imagenes cargadas</h4>
                   <div class="col-md-12" style="overflow-y: scroll; max-height: 350px;">
                     <table class="table">
                       <thead>
@@ -853,8 +869,12 @@
                           <td>{{x.Tipo_}}</td>
                           <td>
 
-                            <img class="img-thumbnail" ng-click="$ctrl.openLightboxModal($index)" ng-src="{{x.RutaCompleta}}" alt="" style="width: 100px; height: 100px; "></td>
-                          <td><button type="button" ng-click="$ctrl.BorraImagen($index)" ng-disabled="$ctrl.detalle" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> Eliminar</button></td>
+                            <img class="img-thumbnail" ng-click="$ctrl.openLightboxModal($index)" ng-src="{{x.RutaCompleta}}" alt="" style="width: 100px; height: 100px; ">
+                          </td>
+                          <td>
+                            <button type="button" ng-click="$ctrl.BorraImagen($index)" ng-disabled="$ctrl.detalle" class="btn btn-xs btn-danger">
+                              <i class="fa fa-trash"></i> Eliminar</button>
+                          </td>
                         </tr>
                       </tbody>
 
@@ -866,22 +886,27 @@
 
             </uib-tab>
             <uib-tab index="7" heading="">
-              <uib-tab-heading> Notas <span class="badge pull-right">{{$ctrl.notas.length+$ctrl.notas_ant.length}}</span></uib-tab-heading>
-              <div class="col-md-12">
-                <div class="col-md-3">
+              <uib-tab-heading> Notas
+                <span class="badge pull-right">{{$ctrl.notas.length+$ctrl.notas_ant.length}}</span>
+              </uib-tab-heading>
+              <div class="col-md-12" style="padding:30px;">
+                <div class="col-md-5">
                   <p class="text-primary">Agrega Nota: </p>
-                  <textarea placeholder="Agrega aqui el contenido de la nota....." class="form-control" ng-model="$ctrl.detallenota" rows="5">
-                    
-                    </textarea>
+                  <textarea placeholder="Agrega aqui el contenido de la nota....." class="form-control" ng-model="$ctrl.detallenota" rows="3">
 
-                  <button class="btn btn-info btn-sm" type="button"  ng-click="$ctrl.guardaNota()"><i class="fa fa-save"></i> agregar</button>
+                  </textarea>
+
+                  <button class="btn btn-info btn-sm" type="button" ng-click="$ctrl.guardaNota()">
+                    <i class="fa fa-save"></i> agregar</button>
                 </div>
-                <div class="col-md-9" style="overflow-y: scroll; max-height: 400px;">
+                <div class="col-md-7" style="overflow-y: scroll; max-height: 400px;">
 
                   <div class="tab-pane" id="activity">
                     <ul class="timeline collapse-lg timeline-hairline">
                       <li class="timeline-inverted" ng-repeat="x in $ctrl.notas">
-                        <div class="timeline-circ circ-xl style-primary"><i class="md md-event"></i></div>
+                        <div class="timeline-circ circ-xl style-primary">
+                          <i class="md md-event"></i>
+                        </div>
                         <div class="timeline-entry">
                           <div class="card style-default-light">
                             <div class="card-body small-padding">
@@ -889,12 +914,18 @@
 
                                </div>
                                <div class="col-md-4"></div>-->
-                              <p><em>{{x.Observacion}}</em></p>
-                              <span class="text-medium">Nota de  <span class="text-primary">{{x.Nombre}}</span></span><br>
-                              <span class="opacity-50">                              
-														{{x.Fecha}}
-														</span>
-                              <button type="button" class="btn btn-danger btn-xs" ng-click="$ctrl.eliminaNota()"><i class="fa fa-trash"></i>Eliminar nota</button>
+                              <p>
+                                <em>{{x.Observacion}}</em>
+                              </p>
+                              <span class="text-medium">Nota de
+                                <span class="text-primary">{{x.Nombre}}</span>
+                              </span>
+                              <br>
+                              <span class="opacity-50">
+                                {{x.Fecha}}
+                              </span>
+                              <button type="button" class="btn btn-danger btn-xs" ng-click="$ctrl.eliminaNota($index)">
+                                <i class="fa fa-trash"></i>Eliminar nota</button>
                             </div>
 
                           </div>
@@ -903,15 +934,22 @@
                       </li>
 
                       <li class="timeline-inverted" ng-repeat="x in $ctrl.notas_ant">
-                        <div class="timeline-circ circ-xl style-primary"><i class="md md-event"></i></div>
+                        <div class="timeline-circ circ-xl style-primary">
+                          <i class="md md-event"></i>
+                        </div>
                         <div class="timeline-entry">
                           <div class="card style-default-light">
                             <div class="card-body small-padding">
-                              <p><em>{{x.Observacion}}</em></p>
-                              <span class="text-medium">Nota de  <span class="text-primary">{{x.Nombre}}</span></span><br>
+                              <p>
+                                <em>{{x.Observacion}}</em>
+                              </p>
+                              <span class="text-medium">Nota de
+                                <span class="text-primary">{{x.Nombre}}</span>
+                              </span>
+                              <br>
                               <span class="opacity-50">
-														{{x.Fecha}}
-														</span>
+                                {{x.Fecha}}
+                              </span>
                             </div>
                           </div>
                         </div>
