@@ -172,7 +172,7 @@ angular
 
 
 
-    factory.GetObtieneBitacoraPorIdMemoria = function (Idmemoria) {
+    factory.GetObtieneBitacoraPorIdMemoria = function (obj) {
       var deferred = $q.defer();
       var config = {
         headers: {
@@ -180,7 +180,11 @@ angular
         }
       };
       var Parametros = {
-        'Idmemoria': Idmemoria
+         'Idmemoria':obj.Idmemoria,
+          'Folio':obj.Folio,
+          'SAN':obj.SAN, 
+          'Contrato':obj.Contrato,
+          'Op':obj.Op        
       };
       $http.post(globalService.getUrl() + paths.GetObtieneBitacoraPorIdMemoria, JSON.stringify(Parametros), config).then(function (response) {
         deferred.resolve(response.data);

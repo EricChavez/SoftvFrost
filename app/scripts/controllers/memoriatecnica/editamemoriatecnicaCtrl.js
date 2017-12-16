@@ -2,7 +2,7 @@
 angular
   .module('softvFrostApp')
   .controller('editamemoriatecnicaCtrl',
-    function ($state, ngNotify, memoriaFactory, moment, firebase, $firebaseArray, $localStorage, $stateParams, $filter, FileUploader, globalService, Lightbox, $q) {
+    function ($state, ngNotify, memoriaFactory, moment, firebase, $firebaseArray, $localStorage, $stateParams, $filter, FileUploader, globalService, Lightbox, $q,Notification) {
 
       var ref = firebase
         .database()
@@ -47,7 +47,7 @@ angular
         memoriaFactory.ObtieneTiposImagenes().then(function (response) {
           vm.tiposresp = response.GetObtieneTiposImagenesListResult;
           memoriaFactory.GetObtieneMemoriaTecnica(vm.id).then(function (data) {
-            console.log(data);
+           
             detalle(data.GetObtieneMemoriaTecnicaResult[0]);
             memoriaFactory.GetObtieneImagenesMemoriaTecnica(vm.id).then(function (response) {
               vm.Lista_evidencias = response.GetObtieneImagenesMemoriaTecnicaResult;
@@ -85,10 +85,10 @@ angular
                   });
 
                   memoriaFactory.GetObtieneObservacionesMemoriaTecnica(vm.id).then(function (result) {
-                    console.log(result.GetObtieneObservacionesMemoriaTecnicaResult);
+                  
                     var notas = result.GetObtieneObservacionesMemoriaTecnicaResult;
                     notas.forEach(function (item) {
-                      console.log(item);
+                     
                       var obj = {};
                       obj.Observacion = item.Observacion;
                       obj.IdUsuario = 0;
@@ -133,6 +133,10 @@ angular
       function getApartos(modem,radio,router,antena,ups) {
         memoriaFactory.GetAparatosTecnico(1, vm.numeroorden, vm.instalador.IdEntidad, vm.IdMemoriaTecnica).then(function (aparatos) {
           vm.listModem = aparatos.GetAparatosTecnicoResult;
+        
+          if(vm.numerofolio){
+            vm.listModem.push({'Clv_CableModem':0,'Descripcion':modem,'Servicio':''});
+          }
           vm.listModem.forEach(function(item,index){
              if(item.Descripcion===modem){
               vm.modem=vm.listModem[index];
@@ -141,6 +145,9 @@ angular
 
           memoriaFactory.GetAparatosTecnico(2, vm.numeroorden, vm.instalador.IdEntidad, vm.IdMemoriaTecnica).then(function (aparatos) {
             vm.listRadio = aparatos.GetAparatosTecnicoResult;
+            if(vm.numerofolio){
+              vm.listRadio.push({'Clv_CableModem':0,'Descripcion':radio,'Servicio':''});
+            }
             vm.listRadio.forEach(function(item,index){
               if(item.Descripcion===radio){
                 vm.serieradio=vm.listRadio[index];
@@ -149,6 +156,9 @@ angular
 
             memoriaFactory.GetAparatosTecnico(3, vm.numeroorden, vm.instalador.IdEntidad, vm.IdMemoriaTecnica).then(function (aparatos) {
               vm.listRouter = aparatos.GetAparatosTecnicoResult;
+              if(vm.numerofolio){
+                vm.listRouter.push({'Clv_CableModem':0,'Descripcion':router,'Servicio':''});
+              }
               vm.listRouter.forEach(function(item,index){
                if(item.Descripcion===router){
                 vm.serierouter=vm.listRouter[index];
@@ -158,10 +168,13 @@ angular
 
               memoriaFactory.GetAparatosTecnico(4, vm.numeroorden, vm.instalador.IdEntidad, vm.IdMemoriaTecnica).then(function (aparatos) {
                 vm.listSTB = aparatos.GetAparatosTecnicoResult;
-
+               
 
                 memoriaFactory.GetAparatosTecnico(5, vm.numeroorden, vm.instalador.IdEntidad, vm.IdMemoriaTecnica).then(function (aparatos) {
                   vm.listAntena = aparatos.GetAparatosTecnicoResult;
+                  if(vm.numerofolio){
+                    vm.listAntena.push({'Clv_CableModem':0,'Descripcion':antena,'Servicio':''});
+                  }
                   vm.listAntena.forEach(function(item,index){
                     if(item.Descripcion===antena){
                       vm.antena=vm.listAntena[index];
@@ -170,6 +183,9 @@ angular
 
                   memoriaFactory.GetAparatosTecnico(6, vm.numeroorden, vm.instalador.IdEntidad, vm.IdMemoriaTecnica).then(function (aparatos) {
                     vm.listUPS = aparatos.GetAparatosTecnicoResult;
+                    if(vm.numerofolio){
+                      vm.listUPS.push({'Clv_CableModem':0,'Descripcion':ups,'Servicio':''});
+                    }
                     vm.listUPS.forEach(function(item,index){
                       if(item.Descripcion===ups){
                         vm.upsserie=vm.listUPS[index];
@@ -322,7 +338,35 @@ angular
 
 
       function guardar() {
-        console.log(vm.instalador);
+     
+
+        if(!vm.vcneutrotierra || !vm.vcfasetierra || !vm.vcfaseneutro  ){
+        
+          Notification({message: 'hay información en el apartado de Mediciones Eléctricas que no se han capturado',title: 'Atención'}, 'warning');
+        }
+    
+        if(!vm.modem || !vm.serieradio  || !vm.serierouter || !vm.marcarouter || !vm.tamanoantena || !vm.sqf || !vm.antena
+        ){
+          Notification({message:'hay información en el apartado de Datos de equipo y desempeño que no se han capturado',title: 'Atención'},'warning');
+        }
+    
+        if(!vm.Instalacion && !vm.Mantenimiento &&  !vm.CambioComponentes &&
+           !vm.SiteSurvey && !vm.InstalacionDemo && !vm.Reubicacion && !vm.Apuntamiento){
+            Notification({message:'Se debe seleccionar por lo menos un tipo de trabajo realizado',title: 'Atención'},'warning');
+        }
+        var tipos=vm.tiposresp;
+        vm.uploader.queue.forEach(function (f) {
+          tipos.forEach(function(item,index){
+             if( f._file.idtipo===item.IdTipo){
+              if (index > -1) { tipos.splice(index, 1); }
+             }
+          })     
+        });
+         
+        if(tipos.length>0){
+          Notification({message:'**No todos los rubros en la carga de imagenes  estan completados',title: 'Atención'},'warning');
+          
+        }
        
         var obj = {
           'IdMemoriaTecnica': vm.IdMemoriaTecnica,
@@ -526,7 +570,7 @@ angular
               result.forEach(function (item, index) {
                 if (parseInt(item.Id) === parseInt(id)) {
                   deleteFile(index).then(function (result) {
-                    console.log(result);
+                   
                   });
 
                 }
@@ -542,6 +586,16 @@ angular
 
           });
 
+      }
+
+      function detalleTecnico() {
+        vm.listModem = [];
+        vm.listRadio = [];
+        vm.listRouter = [];
+        vm.listSTB = [];
+        vm.listAntena = [];
+        vm.aparatosdigitales = [];
+        getApartos();
       }
 
 
@@ -563,6 +617,7 @@ angular
       vm.uploader = new FileUploader();
       vm.id = $stateParams.id;
       initialData();
+      vm.detalleTecnico = detalleTecnico;
       vm.openLightboxModal = openLightboxModal;
       vm.showguardar = true;
       vm.seleccionImagen = true;

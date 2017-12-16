@@ -149,7 +149,7 @@ angular
       }
 
       function detalle(det) {
-        console.log(det);
+     
         vm.Apuntamiento = det.Apuntamiento;
         vm.tamanoantena = det.Antena;
         vm.beam = det.Beam;

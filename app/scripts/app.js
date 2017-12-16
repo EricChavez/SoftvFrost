@@ -36,7 +36,8 @@ angular
     'firebase',
     'angularMoment',
     //"toaster",
-    'ngAnimate'
+    'ngAnimate',
+    'ui-notification'
   ])
   .config([
     '$provide',
@@ -44,12 +45,14 @@ angular
     '$httpProvider',
     '$qProvider',
     'blockUIConfig',
+    'NotificationProvider',
     function (
       $provide,
       $urlRouterProvider,
       $httpProvider,
       $qProvider,
-      blockUIConfig
+      blockUIConfig,
+      NotificationProvider
     ) {
       $qProvider.errorOnUnhandledRejections(false);
 
@@ -62,6 +65,17 @@ angular
         $localStorage,
         $location
       ) {
+
+        NotificationProvider.setOptions({
+          delay: 10000,
+          startTop: 20,
+          startRight: 10,
+          verticalSpacing: 20,
+          horizontalSpacing: 20,
+          positionX: 'right',
+          positionY: 'top'
+      });
+
         function notifyError(rejection) {
           var notify = $injector.get('ngNotify');
           if (

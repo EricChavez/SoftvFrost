@@ -54,7 +54,7 @@ angular.module('softvFrostApp').controller('MainCtrl', function (
           var first = true;
 
           ref.on('child_removed', function (snapshot) {
-            
+            console.log(snapshot);
             vm.messages.$loaded().then(function (notes) {
               vm.count = notes.length;
             });
@@ -67,7 +67,7 @@ angular.module('softvFrostApp').controller('MainCtrl', function (
             var lastIdInSnapshot = keys[keys.length - 1];
            
             ref.orderByKey().startAt(lastIdInSnapshot).on('child_added', function (newMessSnapshot) {
-             
+             console.log(newMessSnapshot);
               if (snap.key === lastIdInSnapshot) {
                 return;
               }

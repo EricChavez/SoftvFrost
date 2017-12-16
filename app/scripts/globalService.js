@@ -26,28 +26,28 @@ angular.module('softvFrostApp')
 
    //   rutas locales
     svc.getUrl = function () {
-      return 'http://localhost:64481/SoftvWCFService.svc';
-   // return 'http://192.168.50.33:3000/SoftvWCFService.svc';
+    //  return 'http://localhost:64481/SoftvWCFService.svc';
+    return 'http://192.168.50.33:3000/SoftvWCFService.svc';
     };
 
     svc.getUrlReportes = function () {
-    // return 'http://192.168.50.33:3000/';
-     return 'http://localhost:64481';
+     return 'http://192.168.50.33:3000/';
+    // return 'http://localhost:64481';
     };
 
     svc.getUrlmemoriatecnica = function () {
-  //  return 'http://192.168.50.33:3500/SoftvWCFService.svc';
-    return 'http://localhost:64482/SoftvWCFService.svc';
+   return 'http://192.168.50.33:3500/SoftvWCFService.svc';
+    //return 'http://localhost:64482/SoftvWCFService.svc';
     };
 
     svc.getUrlmemoriatecnicareportes = function () {
-   // return 'http://192.168.50.33:3500';
-     return 'http://localhost:64482';
+    return 'http://192.168.50.33:3500';
+    // return 'http://localhost:64482';
     };
 
     svc.getUrlmemoriatecnicaImages = function () {
-   //  return 'http://192.168.50.33:3500/MemoriaTecnica';
-     return 'http://localhost:64482/MemoriaTecnica';
+    return 'http://192.168.50.33:3500/MemoriaTecnica';
+   //  return 'http://localhost:64482/MemoriaTecnica';
     };
 
     svc.getUrlHughesService = function () {

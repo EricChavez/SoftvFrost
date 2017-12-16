@@ -11,8 +11,8 @@ angular
     FileUploader,
     $firebaseArray,
     firebase,
-    moment
-
+    moment,
+    Notification
   ) {
     var vm = this;
     vm.cambios = [];
@@ -182,6 +182,7 @@ angular
 
     function getApartos(){
       memoriaFactory.GetAparatosTecnico(1, vm.numeroorden,vm.instalador.IdEntidad,0).then(function (aparatos) {
+      
         vm.listModem = aparatos.GetAparatosTecnicoResult;
         memoriaFactory.GetAparatosTecnico(2, vm.numeroorden, vm.instalador.IdEntidad,0).then(function (aparatos) {       
           vm.listRadio = aparatos.GetAparatosTecnicoResult;
@@ -254,6 +255,36 @@ angular
     }
 
     function guardar() {
+
+      
+      
+    if(!vm.vcneutrotierra|| !vm.vcfasetierra || !vm.vcfaseneutro  ){
+      Notification({message: 'hay información en el apartado de Mediciones Eléctricas que no se han capturado',title: 'Atención'}, 'warning');
+    }
+
+    if(!vm.modem || !vm.serieradio  || !vm.serierouter || !vm.marcarouter || !vm.tamanoantena || !vm.sqf || !vm.antena
+    ){
+      Notification({message:'hay información en el apartado de Datos de equipo y desempeño que no se han capturado',title: 'Atención'},'warning');
+    }
+
+    if(!vm.Instalacion && !vm.Mantenimiento &&  !vm.CambioComponentes &&
+       !vm.SiteSurvey && !vm.InstalacionDemo && !vm.Reubicacion && !vm.Apuntamiento){
+        Notification({message:'Se debe seleccionar por lo menos un tipo de trabajo realizado',title: 'Atención'},'warning');
+    }
+    var tipos=vm.tiposresp;
+    vm.uploader.queue.forEach(function (f) {
+      tipos.forEach(function(item,index){
+         if( f._file.idtipo===item.IdTipo){
+          if (index > -1) { tipos.splice(index, 1); }
+         }
+      })     
+    });
+     
+    if(tipos.length>0){
+      Notification({message:'**No todos los rubros en la carga de imagenes  estan completados',title: 'Atención'},'warning');
+      
+    }
+
       var obj = {
         SAN: isvalid(vm.SAN) === true ? vm.SAN : 0,
         Contrato: isvalid(vm.contrato) === true ? vm.contrato : 0,

@@ -60,6 +60,7 @@ module.exports = function(config) {
       'bower_components/angularfire/dist/angularfire.js',
       'bower_components/angular-moment/angular-moment.js',
       'bower_components/AngularJS-Toaster/toaster.js',
+      'bower_components/angular-ui-notification/dist/angular-ui-notification.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
