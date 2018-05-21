@@ -48,7 +48,7 @@ angular.module('softvFrostApp')
 
     
 
-
+/* 
     //rutas locales
      svc.getUrl = function () {  
        //return  'http://localhost:64481/SoftvWCFService.svc'
@@ -137,7 +137,7 @@ angular.module('softvFrostApp')
 
     svc.getType = function () {
       return 'TLV';
-    }; 
+    };  */
  
 
  
